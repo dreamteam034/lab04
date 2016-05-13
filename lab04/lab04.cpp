@@ -4,7 +4,11 @@
 #include "stdafx.h"
 #include "lab04.h"
 
+#include "Line.h"
+
 #define MAX_LOADSTRING 100
+
+float Scale = 1;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -111,6 +115,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+Line a;
+
+void update(HDC hdc) {
+	a = Line({ 50, 60 }, { 70, 80 });
+	a.Draw(hdc, Scale);
+}
+
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -147,6 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
+			update(hdc); 
             EndPaint(hWnd, &ps);
         }
         break;
