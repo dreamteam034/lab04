@@ -6,6 +6,7 @@
 
 #include "C_Line.h"
 #include "C_Rectangle.h"
+#include "C_Circle.h"
 
 #define MAX_LOADSTRING 100
 
@@ -118,6 +119,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 C_Line a;
 C_Rectangle b;
+C_Circle c;
 
 void update(HDC hdc) {
 	a = C_Line({ 50, 60 }, { 70, 80 });
@@ -125,6 +127,9 @@ void update(HDC hdc) {
  
 	b = C_Rectangle({ 90, 90 }, { 200, 200 });
 	b.Draw(hdc, Scale);
+
+	c = C_Circle({ 100, 100 }, 50);
+	c.Draw(hdc, Scale);
 }
 
 //
