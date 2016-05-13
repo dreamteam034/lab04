@@ -4,7 +4,8 @@
 #include "stdafx.h"
 #include "lab04.h"
 
-#include "Line.h"
+#include "C_Line.h"
+#include "C_Rectangle.h"
 
 #define MAX_LOADSTRING 100
 
@@ -115,11 +116,15 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-Line a;
+C_Line a;
+C_Rectangle b;
 
 void update(HDC hdc) {
-	a = Line({ 50, 60 }, { 70, 80 });
+	a = C_Line({ 50, 60 }, { 70, 80 });
 	a.Draw(hdc, Scale);
+ 
+	b = C_Rectangle({ 90, 90 }, { 200, 200 });
+	b.Draw(hdc, Scale);
 }
 
 //

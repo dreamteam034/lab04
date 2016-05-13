@@ -146,14 +146,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lab04.h" />
-    <ClInclude Include="Line.h" />
+    <ClInclude Include="C_Line.h" />
+    <ClInclude Include="C_Rectangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lab04.cpp" />
-    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="C_Line.cpp" />
+    <ClCompile Include="C_Rectangle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
