@@ -1,6 +1,8 @@
 // lab04.cpp : Defines the entry point for the application.
 //
 
+#include <stdio.h>
+
 #include "stdafx.h"
 #include "lab04.h"
 
@@ -10,7 +12,7 @@
 
 #define MAX_LOADSTRING 100
 
-float Scale = 1;
+float Scale = 3;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -22,6 +24,8 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -60,7 +64,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     return (int) msg.wParam;
 }
-
 
 
 //
@@ -144,6 +147,11 @@ void update(HDC hdc) {
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
+	BOOL LBTisDown = false;
+
+	wchar_t buffer[64];
+
     switch (message)
     {
     case WM_COMMAND:
@@ -165,16 +173,57 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
 			update(hdc); 
+			if (LBTisDown == true)
+			{
+				MoveToEx(hdc, oldMousePos.x, oldMousePos.y, NULL);
+				LineTo(hdc, newMousePos.x, newMousePos.y);
+				swprintf(buffer, _countof(buffer), L"Mouse old pos is %d, %d\n", oldMousePos.x, oldMousePos.y);
+				OutputDebugString(buffer);
+			}
             EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+	case WM_LBUTTONDOWN:
+		{
+			LBTisDown = true;
+			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
+			OutputDebugString(buffer);
+			Scale = Scale - 0.2;
+			GetCursorPos(&oldMousePos);
+			
+			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+		}
+		break;
+	case WM_RBUTTONDOWN:
+		{
+			Scale = Scale + 0.2;
+			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+		}
+		break;
+	case WM_MOUSEMOVE:
+		{
+			GetCursorPos(&newMousePos);
+			//	swprintf(buffer, _countof(buffer), L"Mouse new pos is %d, %d\n", newMousePos.x, newMousePos.y);
+			//	OutputDebugString(buffer);
+			if (LBTisDown)
+			{
+				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+			}
+		}
+		break;
+	case WM_LBUTTONUP:
+		{
+			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+			LBTisDown = false;
+		}
+		break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

@@ -16,7 +16,7 @@ C_Circle::C_Circle(POINT C, unsigned int R)
 
 void C_Circle::Draw(HDC hdc, float Scale)
 {
-	Ellipse(hdc, C.x - R, C.y - R, C.x + R, C.y + R);
+	Ellipse(hdc, (C.x - R)*Scale, (C.y - R)*Scale, (C.x + R)*Scale, (C.y + R)*Scale);
 }
 
 void C_Circle::Remove()
