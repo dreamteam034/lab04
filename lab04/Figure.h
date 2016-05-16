@@ -13,6 +13,7 @@ public:
 	Figure();
 	Figure(Point start, Point end, char *type);
 
+	BOOL draw(HDC hdc, float Scale);
 	void move(Point oldMousePos, Point newMousePos);
 	void destroy();
 

@@ -20,16 +20,16 @@ BOOL Figure::draw(HDC hdc, float Scale)
 {
 	BOOL tmp;
 
-	if (strcmp(type, "line")) {
+	if (strcmp(type, "line") == 0) {
 		tmp = MoveToEx(hdc, start.getX() * Scale, start.getY() * Scale, NULL);
 		if (!tmp)
 			return tmp;
 		tmp = LineTo(hdc, end.getX() * Scale, end.getY() * Scale);
 	}
-	else if (strcmp(type, "rectangle")) {
+	else if (strcmp(type, "rectangle") == 0) {
 		tmp = Rectangle(hdc, start.getX() * Scale, start.getY() * Scale, end.getX() * Scale, end.getY() * Scale);
 	}
-	else if (strcmp(type, "circle")) {
+	else if (strcmp(type, "circle") == 0) {
 		tmp = Ellipse(hdc, start.getX() * Scale, start.getY()* Scale, end.getX() * Scale, end.getY() * Scale);
 	}
 

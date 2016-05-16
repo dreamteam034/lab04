@@ -6,9 +6,7 @@
 #include "stdafx.h"
 #include "lab04.h"
 
-#include "C_Line.h"
-#include "C_Rectangle.h"
-#include "C_Circle.h"
+#include "Figure.h"
 
 #define MAX_LOADSTRING 100
 
@@ -120,19 +118,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-C_Line a;
-C_Rectangle b;
-C_Circle c;
+Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
 
 void update(HDC hdc) {
-	a = C_Line({ 50, 60 }, { 70, 80 });
-	a.Draw(hdc, Scale);
- 
-	b = C_Rectangle({ 90, 90 }, { 200, 200 });
-	b.Draw(hdc, Scale);
-
-	c = C_Circle({ 100, 100 }, 50);
-	c.Draw(hdc, Scale);
+	a.draw(hdc, Scale);
 }
 
 //
