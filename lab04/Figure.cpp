@@ -19,6 +19,7 @@ Figure::Figure(Point start, Point end, char * type)
 BOOL Figure::draw(HDC hdc, float Scale)
 {
 	BOOL tmp;
+	wchar_t buffer[64];
 
 	if (strcmp(type, "line") == 0) {
 		tmp = MoveToEx(hdc, start.getX() * Scale, start.getY() * Scale, NULL);
@@ -32,6 +33,9 @@ BOOL Figure::draw(HDC hdc, float Scale)
 	else if (strcmp(type, "circle") == 0) {
 		tmp = Ellipse(hdc, start.getX() * Scale, start.getY()* Scale, end.getX() * Scale, end.getY() * Scale);
 	}
+
+	swprintf(buffer, _countof(buffer), L"Fugure %s on screen coordinates is %d, %d (start) %d, %d (end)\n", type, start.getX(), start.getY(), end.getX(), end.getY());
+	OutputDebugString(buffer);
 
 	return tmp;
 }

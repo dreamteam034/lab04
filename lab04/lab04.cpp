@@ -7,10 +7,11 @@
 #include "lab04.h"
 
 #include "Figure.h"
+#include "FigureList.h"
 
 #define MAX_LOADSTRING 100
 
-float Scale = 3;
+float Scale = 1;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -118,10 +119,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+
+FigureList list; 
 Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
 
 void update(HDC hdc) {
-	a.draw(hdc, Scale);
+	list = FigureList();
+	list.add(a);
+	list.add({ { 10, 20 }, { 30, 40 }, "circle" });
+	list.add({ { 20, 30 },{ 40, 50 }, "circle" });
+	list.add({ { 400, 500 }, { 600, 700 }, "circle" });
+
+	list.drawList(hdc, Scale);
 }
 
 //
