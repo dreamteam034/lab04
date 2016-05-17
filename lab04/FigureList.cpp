@@ -15,6 +15,7 @@ bool FigureList::add(Figure figure)
 	listPtr = (Figure *)realloc(list, count * sizeof(Figure));
 	list = listPtr; 
 	list[count - 1] = figure;
+	list[count - 1].setPosInList(count - 1);
 	return true;
 }
 
@@ -23,6 +24,14 @@ void FigureList::drawList(HDC hdc, float Scale)
 	for (int i = 0; i < count; i++) {
 		list[i].draw(hdc, Scale);
 	}
+}
+
+bool FigureList::remove(unsigned int pos)
+{
+	for (int i = pos; i < count - 1; i++) {
+		list[i] = list[i + 1];
+	}
+	return true;
 }
 
 FigureList::~FigureList()

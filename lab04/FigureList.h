@@ -12,7 +12,7 @@ public:
 
 	bool add(Figure figure);
 	void drawList(HDC hdc, float Scale);
-	bool remove(); //	пока что не знаю что с этим делать
+	bool remove(unsigned int pos); //	пока что не знаю что с этим делать
 
 	~FigureList();
 };

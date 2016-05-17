@@ -34,9 +34,6 @@ BOOL Figure::draw(HDC hdc, float Scale)
 		tmp = Ellipse(hdc, start.getX() * Scale, start.getY()* Scale, end.getX() * Scale, end.getY() * Scale);
 	}
 
-	swprintf(buffer, _countof(buffer), L"Fugure %s on screen coordinates is %d, %d (start) %d, %d (end)\n", type, start.getX(), start.getY(), end.getX(), end.getY());
-	OutputDebugString(buffer);
-
 	return tmp;
 }
 
@@ -47,6 +44,16 @@ void Figure::move(Point oldMousePos, Point newMousePos)
 	end = end + mouseDelta;
 }
 
+
+void Figure::setPosInList(unsigned int value)
+{
+	posInList = value;
+}
+
+unsigned int Figure::getPosInList()
+{
+	return posInList;
+}
 
 Figure::~Figure()
 {
