@@ -1,8 +1,6 @@
 // lab04.cpp : Defines the entry point for the application.
 //
 
-
-
 #include "stdafx.h"
 #include "lab04.h"
 
@@ -128,7 +126,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 void processInputFile(char *path) {
 	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
 	char buffer[bufferLength], *bufferPtr = buffer, c, type[typeLength], c_value[valueLength];
-	int *i_values;
+	int tmp;
 	bool onStart = true; //	Мы только начали считывать информацию о фигуре 
 	ifstream in("input.txt");
 
@@ -142,6 +140,7 @@ void processInputFile(char *path) {
 			}
 		}
 		if (c == '=') {
+			*bufferPtr = '\n';
 			strcpy_s(type, buffer);
 		}
 		else if (c == '{') {
@@ -150,12 +149,27 @@ void processInputFile(char *path) {
 					*bufferPtr++ = c;
 				}
 				else if (c == '=') {
+					*bufferPtr = '\0';
 					bufferPtr = c_value;
+
+					for (int i = 0; i < sizeof(param) / sizeof(char*); i++) {
+						if (!strcmp(buffer, param[i])) {
+							tmp = i;
+						}
+					}
 				}
 				else if (c == ';') {
+					*bufferPtr = '\0';
 					bufferPtr = buffer;
+
+					inputedParams[tmp] = atoi(c_value); 
+					
+				}
+				else if (c == '}') {
+					break;
 				}
 			}
+			bufferPtr = buffer;
 		}
 	}
 }
@@ -188,6 +202,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
 	BOOL LBTisDown = false;
+	
 
 	wchar_t buffer[64];
 
