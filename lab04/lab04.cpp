@@ -1,14 +1,16 @@
 // lab04.cpp : Defines the entry point for the application.
 //
 
-#include <fstream>
-#include <ctype.h>
+
 
 #include "stdafx.h"
 #include "lab04.h"
 
 #include "Figure.h"
 #include "FigureList.h"
+
+#include <fstream>
+#include <ctype.h>
 
 #define MAX_LOADSTRING 100
 
@@ -128,7 +130,7 @@ void processInputFile(char *path) {
 	char buffer[bufferLength], *bufferPtr = buffer, c, type[typeLength], c_value[valueLength];
 	int *i_values;
 	bool onStart = true; //	Мы только начали считывать информацию о фигуре 
-	ifstream in(path);
+	ifstream in("input.txt");
 
 	while (in.eof()) {
 		in >> c;
@@ -140,7 +142,7 @@ void processInputFile(char *path) {
 			}
 		}
 		if (c == '=') {
-			strcpy(type, buffer);
+			strcpy_s(type, buffer);
 		}
 		else if (c == '{') {
 			while (in >> c) {
