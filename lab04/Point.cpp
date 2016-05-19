@@ -29,7 +29,7 @@ int Point::getX()
 
 int Point::getY()
 {
-	return x;
+	return y;
 }
 
 Point Point::get()

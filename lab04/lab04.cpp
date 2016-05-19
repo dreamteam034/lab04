@@ -188,6 +188,18 @@ void update(HDC hdc) {
 	list.drawList(hdc, Scale);
 }
 
+
+char *szToolById[] = {
+	"line",
+	"circle",
+	"rectangle",
+	"rectangle"
+};
+
+int iCurrentTool = -1;
+bool bDrawTemp = false;
+Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
+
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -200,12 +212,15 @@ void update(HDC hdc) {
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+<<<<<<< HEAD
 	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
 	BOOL LBTisDown = false;
 	
 
 	wchar_t buffer[64];
 
+=======
+>>>>>>> refs/remotes/origin/master
     switch (message)
     {
     case WM_COMMAND:
@@ -226,6 +241,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
+			case IDM_TOOLS_SELECTION:
+				iCurrentTool = -1;
+				break;
+			case IDM_TOOLS_LINE:
+				iCurrentTool = 0;
+				break;
+			case IDM_TOOLS_CIRCLE:
+				iCurrentTool = 1;
+				break;
+			case IDM_TOOLS_RECTANGLE:
+				iCurrentTool = 2;
+				break;
+			case IDM_TOOLS_ROUNDED_RECTANGLE:
+				iCurrentTool = 3;
+				break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
@@ -236,14 +266,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
-			update(hdc); 
-			if (LBTisDown == true)
+			if (bDrawTemp)
 			{
-				MoveToEx(hdc, oldMousePos.x, oldMousePos.y, NULL);
-				LineTo(hdc, newMousePos.x, newMousePos.y);
-				swprintf(buffer, _countof(buffer), L"Mouse old pos is %d, %d\n", oldMousePos.x, oldMousePos.y);
-				OutputDebugString(buffer);
+				Figure TempFigure(startMousePos, currentMousePos, szToolById[iCurrentTool]);
+				TempFigure.draw(hdc, 1);
 			}
+			list.drawList(hdc, 1);
+
             EndPaint(hWnd, &ps);
         }
         break;
@@ -252,6 +281,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 	case WM_LBUTTONDOWN:
 		{
+<<<<<<< HEAD
 			LBTisDown = true;
 			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
 			OutputDebugString(buffer);
@@ -259,29 +289,50 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			GetCursorPos(&oldMousePos);
 			
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-		}
-		break;
-	case WM_RBUTTONDOWN:
-		{
-			Scale = Scale + 0.02;
-			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-		}
-		break;
-	case WM_MOUSEMOVE:
-		{
-			GetCursorPos(&newMousePos);
-			//	swprintf(buffer, _countof(buffer), L"Mouse new pos is %d, %d\n", newMousePos.x, newMousePos.y);
-			//	OutputDebugString(buffer);
-			if (LBTisDown)
+=======
+			startMousePos = { LOWORD(lParam), HIWORD(lParam) };
+			if (iCurrentTool >= 0)
 			{
-				RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
+				// Let's start temp drawing
+				bDrawTemp = true;
 			}
+>>>>>>> refs/remotes/origin/master
 		}
 		break;
 	case WM_LBUTTONUP:
 		{
+<<<<<<< HEAD
+			Scale = Scale + 0.02;
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-			LBTisDown = false;
+=======
+			bDrawTemp = false;
+
+			if (iCurrentTool >= 0)
+			{
+				// Let's create our figure
+				list.add({ startMousePos, currentMousePos, szToolById[iCurrentTool] });
+			}
+			else
+			{
+				// Let's select figure
+
+			}
+>>>>>>> refs/remotes/origin/master
+		}
+		break;
+	case WM_MOUSEMOVE:
+		{
+			currentMousePos = { LOWORD(lParam), HIWORD(lParam) };
+			if (bDrawTemp && iCurrentTool >= 0)
+			{
+				// Let's redraw current figure
+				InvalidateRect(hWnd, NULL, TRUE);
+			}
+		}
+		break;
+	case WM_RBUTTONDOWN:
+		{
+			
 		}
 		break;
     default:
