@@ -1,7 +1,8 @@
 // lab04.cpp : Defines the entry point for the application.
 //
 
-#include <stdio.h>
+#include <fstream>
+#include <ctype.h>
 
 #include "stdafx.h"
 #include "lab04.h"
@@ -12,6 +13,8 @@
 #define MAX_LOADSTRING 100
 
 float Scale = 1;
+
+using namespace std;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -120,6 +123,42 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 }
 
 
+void processInputFile(char *path) {
+	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
+	char buffer[bufferLength], *bufferPtr = buffer, c, type[typeLength], c_value[valueLength];
+	int *i_values;
+	bool onStart = true; //	Мы только начали считывать информацию о фигуре 
+	ifstream in(path);
+
+	while (in.eof()) {
+		in >> c;
+
+		
+		if (isalpha(c)) {
+			if (onStart) {
+				*bufferPtr++ = c;
+			}
+		}
+		if (c == '=') {
+			strcpy(type, buffer);
+		}
+		else if (c == '{') {
+			while (in >> c) {
+				if (isalpha(c)) {
+					*bufferPtr++ = c;
+				}
+				else if (c == '=') {
+					bufferPtr = c_value;
+				}
+				else if (c == ';') {
+					bufferPtr = buffer;
+				}
+			}
+		}
+	}
+}
+
+
 FigureList list; 
 Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
 
@@ -161,6 +200,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
+			case ID_FILE_OPEN:
+
+				break;
+			case ID_FILE_SAVE:
+
+				break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -193,7 +238,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			LBTisDown = true;
 			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
 			OutputDebugString(buffer);
-			Scale = Scale - 0.2;
+			Scale = Scale - 0.02;
 			GetCursorPos(&oldMousePos);
 			
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
@@ -201,7 +246,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_RBUTTONDOWN:
 		{
-			Scale = Scale + 0.2;
+			Scale = Scale + 0.02;
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 		}
 		break;
