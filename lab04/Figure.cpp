@@ -73,6 +73,11 @@ unsigned int Figure::getPosInList()
 	return posInList;
 }
 
+char * Figure::getType()
+{
+	return type;
+}
+
 Figure::~Figure()
 {
 }

@@ -25,6 +25,7 @@ public:
 	void setPosInList(unsigned int value);
 
 	unsigned int getPosInList();
+	char * getType();
 
 	~Figure();
 };
