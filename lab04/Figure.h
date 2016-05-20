@@ -15,14 +15,14 @@ private:
 	unsigned int posInList; 
 public:
 	Figure();
-	Figure(Point start, Point end, char *type);
-	Figure(Point start, Point end, char *type, unsigned backgroundColor, unsigned borderColor, int backgroundStyle, int borderStyle);
+	Figure(static Point start, static Point end, static char *type);
+	Figure(static Point start, static Point end, static char *type, static unsigned backgroundColor, static unsigned borderColor, static int backgroundStyle, static int borderStyle);
 
-	BOOL draw(HDC hdc, float Scale);
-	void move(Point oldMousePos, Point newMousePos);
+	BOOL draw(static HDC hdc, static float Scale);
+	void move(static Point oldMousePos, static Point newMousePos);
 	void destroy();
 
-	void setPosInList(unsigned int value);
+	void setPosInList(static unsigned int value);
 
 	unsigned int getPosInList();
 	char * getType();
