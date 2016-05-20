@@ -7,16 +7,34 @@ Figure::Figure()
 	start = Point( NULL, NULL ); 
 	end = Point ( NULL, NULL );
 	type = NULL;
+	backgroundColor = RGB(0, 0, 0);
+	borderColor = RGB(0, 0, 0);
+	backgroundStyle = 0;
+	borderStyle = PS_SOLID;
 }
 
-Figure::Figure(Point start, Point end, char * type)
+Figure::Figure(static Point start, static Point end, static char * type) {
+	this->start = start;
+	this->end = end;
+	this->type = type;
+	backgroundColor = RGB(0, 0, 0);
+	borderColor = RGB(0, 0, 0);
+	backgroundStyle = 0;
+	borderStyle = PS_SOLID;
+}
+
+Figure::Figure(static Point start, static Point end, static char * type, static unsigned backgroundColor, static unsigned borderColor, static int backgroundStyle, static int borderStyle)
 {
 	this->start = start;
 	this->end = end;
 	this->type = type;
+	this->backgroundColor = backgroundColor;
+	this->borderColor = borderColor; 
+	this->backgroundStyle = backgroundStyle;
+	this->borderStyle = borderStyle;
 }
 
-BOOL Figure::draw(HDC hdc, float Scale)
+BOOL Figure::draw(static HDC hdc, static float Scale)
 {
 	BOOL tmp;
 	wchar_t buffer[64];
@@ -37,7 +55,7 @@ BOOL Figure::draw(HDC hdc, float Scale)
 	return tmp;
 }
 
-void Figure::move(Point oldMousePos, Point newMousePos)
+void Figure::move(static Point oldMousePos, static Point newMousePos)
 {
 	Point mouseDelta = newMousePos - oldMousePos;
 	start = start + mouseDelta;
@@ -53,6 +71,11 @@ void Figure::setPosInList(unsigned int value)
 unsigned int Figure::getPosInList()
 {
 	return posInList;
+}
+
+char * Figure::getType()
+{
+	return type;
 }
 
 Figure::~Figure()
