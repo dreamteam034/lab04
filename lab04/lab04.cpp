@@ -7,12 +7,19 @@
 #include "Figure.h"
 #include "FigureList.h"
 
+<<<<<<< HEAD
+#include <fstream>
+#include <ctype.h>
+=======
 #include <stdio.h>
 #include <commdlg.h>
+>>>>>>> master
 
 #define MAX_LOADSTRING 100
 
 float Scale = 1;
+
+using namespace std;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -125,6 +132,76 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+<<<<<<< HEAD
+
+void processInputFile(char *path) {
+	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
+	char buffer[bufferLength], *bufferPtr = buffer, c, type[typeLength], c_value[valueLength];
+	int tmp;
+	bool onStart = true; //	Мы только начали считывать информацию о фигуре 
+	ifstream in("input.txt");
+
+	while (in.eof()) {
+		in >> c;
+
+		
+		if (isalpha(c)) {
+			if (onStart) {
+				*bufferPtr++ = c;
+			}
+		}
+		if (c == '=') {
+			*bufferPtr = '\n';
+			strcpy_s(type, buffer);
+		}
+		else if (c == '{') {
+			while (in >> c) {
+				if (isalpha(c)) {
+					*bufferPtr++ = c;
+				}
+				else if (c == '=') {
+					*bufferPtr = '\0';
+					bufferPtr = c_value;
+
+					for (int i = 0; i < sizeof(param) / sizeof(char*); i++) {
+						if (!strcmp(buffer, param[i])) {
+							tmp = i;
+						}
+					}
+				}
+				else if (c == ';') {
+					*bufferPtr = '\0';
+					bufferPtr = buffer;
+
+					inputedParams[tmp] = atoi(c_value); 
+					
+				}
+				else if (c == '}') {
+					break;
+				}
+			}
+			bufferPtr = buffer;
+		}
+	}
+}
+
+
+FigureList list; 
+Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
+
+void update(HDC hdc) {
+	list = FigureList();
+	list.add(a);
+	list.add({ { 10, 20 }, { 30, 40 }, "circle" });
+	list.add({ { 20, 30 },{ 40, 50 }, "circle" });
+	list.add({ { 400, 500 }, { 600, 700 }, "circle" });
+
+	list.drawList(hdc, Scale);
+}
+
+
+=======
+>>>>>>> master
 char *szToolById[] = {
 	"line",
 	"circle",
@@ -153,7 +230,15 @@ DWORD rgbBorder = RGB(0, 0, 0);
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+<<<<<<< HEAD
+	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
+	BOOL LBTisDown = false;
+	
 
+	wchar_t buffer[64];
+=======
+
+>>>>>>> master
 
     switch (message)
     {
@@ -166,6 +251,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
+			case ID_FILE_OPEN:
+
+				break;
+			case ID_FILE_SAVE:
+
+				break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -225,6 +316,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 	case WM_LBUTTONDOWN:
 		{
+			LBTisDown = true;
+			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
+			OutputDebugString(buffer);
+			Scale = Scale - 0.02;
+			GetCursorPos(&oldMousePos);
+			
+			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 			startMousePos = { LOWORD(lParam), HIWORD(lParam) };
 			if (iCurrentTool >= 0)
 			{
@@ -235,6 +333,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONUP:
 		{
+			Scale = Scale + 0.02;
+			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 			bDrawTemp = false;
 
 			if (iCurrentTool >= 0)
