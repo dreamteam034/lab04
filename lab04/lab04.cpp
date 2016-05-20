@@ -7,8 +7,13 @@
 #include "Figure.h"
 #include "FigureList.h"
 
+<<<<<<< HEAD
 #include <fstream>
 #include <ctype.h>
+=======
+#include <stdio.h>
+#include <commdlg.h>
+>>>>>>> master
 
 #define MAX_LOADSTRING 100
 
@@ -27,7 +32,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-
+CHOOSECOLOR cc;
+static COLORREF acrCustClr[16];
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -38,6 +44,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+	ZeroMemory(&cc, sizeof(cc));
+	cc.lStructSize = sizeof(cc);
+	cc.lpCustColors = (LPDWORD)acrCustClr;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -122,6 +132,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+<<<<<<< HEAD
 
 void processInputFile(char *path) {
 	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
@@ -189,16 +200,23 @@ void update(HDC hdc) {
 }
 
 
+=======
+>>>>>>> master
 char *szToolById[] = {
 	"line",
 	"circle",
 	"rectangle",
-	"rectangle"
+	"rectangle_rounded"
 };
 
 int iCurrentTool = -1;
 bool bDrawTemp = false;
+FigureList list;
 Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
+
+DWORD rgbBackground = RGB(0, 0, 0);
+DWORD rgbBorder = RGB(0, 0, 0);
+
 
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
@@ -212,11 +230,15 @@ Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+<<<<<<< HEAD
 	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
 	BOOL LBTisDown = false;
 	
 
 	wchar_t buffer[64];
+=======
+
+>>>>>>> master
 
     switch (message)
     {
@@ -253,22 +275,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case IDM_TOOLS_ROUNDED_RECTANGLE:
 				iCurrentTool = 3;
 				break;
+			case IDM_COLORS_BACKGROUND:
+				cc.hwndOwner = hWnd;
+				cc.rgbResult = rgbBackground;
+				if (ChooseColor(&cc) == TRUE)
+					rgbBackground = cc.rgbResult;
+
+				break;
+			case IDM_COLORS_BORDER:
+				cc.hwndOwner = hWnd;
+				cc.rgbResult = rgbBorder;
+				if (ChooseColor(&cc) == TRUE)
+					rgbBorder = cc.rgbResult;
+
+				break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
+		
         break;
     case WM_PAINT:
         {
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
+			list.drawList(hdc, 1);
+
 			if (bDrawTemp)
 			{
 				Figure TempFigure(startMousePos, currentMousePos, szToolById[iCurrentTool]);
 				TempFigure.draw(hdc, 1);
 			}
-			list.drawList(hdc, 1);
 
             EndPaint(hWnd, &ps);
         }
@@ -303,11 +341,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				// Let's create our figure
 				list.add({ startMousePos, currentMousePos, szToolById[iCurrentTool] });
+				InvalidateRect(hWnd, NULL, TRUE);
 			}
 			else
 			{
 				// Let's select figure
-
+				unsigned length = list.getLength();
+				for (unsigned i = length; i > 0; i--)
+				{
+					
+				}
 			}
 		}
 		break;
@@ -324,6 +367,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONDOWN:
 		{
 			
+		}
+		break;
+	case WM_KEYDOWN:
+		{
+			switch (wParam)
+			{
+			case VK_DELETE:
+				
+				break;
+			}
 		}
 		break;
     default:
