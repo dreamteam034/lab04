@@ -212,15 +212,12 @@ Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-<<<<<<< HEAD
 	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
 	BOOL LBTisDown = false;
 	
 
 	wchar_t buffer[64];
 
-=======
->>>>>>> refs/remotes/origin/master
     switch (message)
     {
     case WM_COMMAND:
@@ -281,7 +278,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 	case WM_LBUTTONDOWN:
 		{
-<<<<<<< HEAD
 			LBTisDown = true;
 			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
 			OutputDebugString(buffer);
@@ -289,22 +285,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			GetCursorPos(&oldMousePos);
 			
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-=======
 			startMousePos = { LOWORD(lParam), HIWORD(lParam) };
 			if (iCurrentTool >= 0)
 			{
 				// Let's start temp drawing
 				bDrawTemp = true;
 			}
->>>>>>> refs/remotes/origin/master
 		}
 		break;
 	case WM_LBUTTONUP:
 		{
-<<<<<<< HEAD
 			Scale = Scale + 0.02;
 			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
-=======
 			bDrawTemp = false;
 
 			if (iCurrentTool >= 0)
@@ -317,7 +309,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				// Let's select figure
 
 			}
->>>>>>> refs/remotes/origin/master
 		}
 		break;
 	case WM_MOUSEMOVE:
