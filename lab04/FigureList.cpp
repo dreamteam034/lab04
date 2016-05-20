@@ -34,6 +34,11 @@ bool FigureList::remove(unsigned int pos)
 	return true;
 }
 
+unsigned FigureList::getLength()
+{
+	return count;
+}
+
 FigureList::~FigureList()
 {
 }
