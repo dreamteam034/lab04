@@ -1,6 +1,9 @@
 #pragma once
 
 #include <windows.h>
+#include <iostream>
+
+using namespace std;
 
 class Point
 {
@@ -16,6 +19,8 @@ public:
 	int getX();
 	int getY();
 	Point get();
+
+	friend ostream& operator<< (ostream& Stream, const Point& point);
 
 	~Point();
 };

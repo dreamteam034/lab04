@@ -34,6 +34,7 @@ Figure::Figure(static Point start, static Point end, static char * type, static 
 	this->borderStyle = borderStyle;
 }
 
+
 BOOL Figure::draw(static HDC hdc, static float Scale)
 {
 	BOOL tmp;
@@ -80,4 +81,15 @@ char * Figure::getType()
 
 Figure::~Figure()
 {
+}
+
+ostream & operator<<(ostream & Stream, const Figure & figure)
+{
+	Stream << figure.type << " {" << endl;
+	Stream << "A = " << figure.start << "\n" << "B = " << figure.end << endl;
+	Stream << "Fill_Color = " << figure.backgroundColor << "\n" << "Border_Color = " << figure.borderColor << endl;
+	Stream << "Fill_Style = " << figure.backgroundStyle << "\n" << "Border_Style = " << figure.borderStyle << endl;
+	Stream << "}\n" << endl;
+
+	return Stream;
 }

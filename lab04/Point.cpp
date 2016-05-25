@@ -41,3 +41,8 @@ Point::~Point()
 {
 }
 
+ostream & operator<<(ostream & Stream, const Point & point)
+{
+	Stream << point.x << ", " << point.y;
+	return Stream;
+}

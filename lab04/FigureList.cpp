@@ -34,6 +34,16 @@ bool FigureList::remove(unsigned int pos)
 	return true;
 }
 
+void FigureList::printList(wchar_t *path)
+{
+	ofstream out(path);
+	if (count > 0) {
+		for (int i = 0; i < count; i++) {
+			out << list[i];
+		}
+	}
+}
+
 unsigned FigureList::getLength()
 {
 	return count;
@@ -42,3 +52,5 @@ unsigned FigureList::getLength()
 FigureList::~FigureList()
 {
 }
+
+

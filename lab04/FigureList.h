@@ -1,6 +1,10 @@
 ﻿#pragma once
 
+#include <fstream>
+
 #include "Figure.h"
+
+using namespace std;
 
 class FigureList
 {
@@ -10,6 +14,7 @@ private:
 public:
 	FigureList();
 
+	void printList(wchar_t *path);
 	unsigned getLength();
 	bool add(Figure figure);
 	void drawList(HDC hdc, float Scale);

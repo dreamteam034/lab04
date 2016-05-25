@@ -27,6 +27,8 @@ public:
 	unsigned int getPosInList();
 	char * getType();
 
+	friend ostream& operator<< (ostream& Stream, const Figure& figure);
+
 	~Figure();
 };
 

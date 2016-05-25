@@ -1,4 +1,4 @@
-// lab04.cpp : Defines the entry point for the application.
+ // lab04.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
@@ -7,13 +7,13 @@
 #include "Figure.h"
 #include "FigureList.h"
 
-<<<<<<< HEAD
+
 #include <fstream>
 #include <ctype.h>
-=======
+
 #include <stdio.h>
 #include <commdlg.h>
->>>>>>> master
+
 
 #define MAX_LOADSTRING 100
 
@@ -132,9 +132,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-<<<<<<< HEAD
+FigureList list;
 
-void processInputFile(char *path) {
+void processInputFile(wchar_t *path) {
 	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
 	char buffer[bufferLength], *bufferPtr = buffer, c, type[typeLength], c_value[valueLength];
 	int tmp;
@@ -186,7 +186,6 @@ void processInputFile(char *path) {
 }
 
 
-FigureList list; 
 Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
 
 void update(HDC hdc) {
@@ -199,9 +198,6 @@ void update(HDC hdc) {
 	list.drawList(hdc, Scale);
 }
 
-
-=======
->>>>>>> master
 char *szToolById[] = {
 	"line",
 	"circle",
@@ -209,9 +205,10 @@ char *szToolById[] = {
 	"rectangle_rounded"
 };
 
+
+
 int iCurrentTool = -1;
 bool bDrawTemp = false;
-FigureList list;
 Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
 
 DWORD rgbBackground = RGB(0, 0, 0);
@@ -230,15 +227,16 @@ DWORD rgbBorder = RGB(0, 0, 0);
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-<<<<<<< HEAD
+	OPENFILENAME ofn = {0};
 	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
-	BOOL LBTisDown = false;
-	
+	BOOL LBTisDown = false;	
+
+
+	LPWSTR szFileName = L"";
+
+	ZeroMemory(&ofn, sizeof(ofn));
 
 	wchar_t buffer[64];
-=======
-
->>>>>>> master
 
     switch (message)
     {
@@ -252,9 +250,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
 			case ID_FILE_OPEN:
+				ZeroMemory(&ofn, sizeof(ofn));
 
+				ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
+				ofn.hwndOwner = hWnd;
+				ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+				ofn.lpstrFile = szFileName;
+				ofn.nMaxFile = MAX_PATH;
+				ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+				ofn.lpstrDefExt = L"txt";
+
+
+				if (GetOpenFileName(&ofn))
+				{
+					processInputFile(szFileName);
+				}
 				break;
 			case ID_FILE_SAVE:
+
+				ofn.lStructSize = sizeof(ofn);
+				ofn.hwndOwner = hWnd;
+				ofn.lpstrFile = szFileName;
+				ofn.nMaxFile = sizeof(szFileName);
+				ofn.lpstrFilter = _T("Text\0*.txt");
+				
+				if (GetOpenFileName(&ofn)) {
+					list.printList(szFileName);
+				}
+
 
 				break;
             case IDM_EXIT:
