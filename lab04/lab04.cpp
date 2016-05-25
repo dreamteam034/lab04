@@ -7,13 +7,11 @@
 #include "Figure.h"
 #include "FigureList.h"
 
-<<<<<<< HEAD
 #include <fstream>
 #include <ctype.h>
-=======
+
 #include <stdio.h>
 #include <commdlg.h>
->>>>>>> master
 
 #define MAX_LOADSTRING 100
 
@@ -132,7 +130,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-<<<<<<< HEAD
 
 void processInputFile(char *path) {
 	const unsigned int bufferLength = 32, typeLength = 16, valueLength = 8, maxLength = 9;
@@ -156,10 +153,12 @@ void processInputFile(char *path) {
 		}
 		else if (c == '{') {
 			while (in >> c) {
-				if (isalpha(c)) {
+				if (isalpha(c)) 
+				{
 					*bufferPtr++ = c;
 				}
-				else if (c == '=') {
+				else if (c == '=') 
+				{
 					*bufferPtr = '\0';
 					bufferPtr = c_value;
 
@@ -169,14 +168,16 @@ void processInputFile(char *path) {
 						}
 					}
 				}
-				else if (c == ';') {
+				else if (c == ';') 
+				{
 					*bufferPtr = '\0';
 					bufferPtr = buffer;
 
 					inputedParams[tmp] = atoi(c_value); 
 					
 				}
-				else if (c == '}') {
+				else if (c == '}') 
+				{
 					break;
 				}
 			}
@@ -186,7 +187,7 @@ void processInputFile(char *path) {
 }
 
 
-FigureList list; 
+/*FigureList list; 
 Figure a = Figure({ 50, 60 }, {200, 300}, "circle");
 
 void update(HDC hdc) {
@@ -197,11 +198,8 @@ void update(HDC hdc) {
 	list.add({ { 400, 500 }, { 600, 700 }, "circle" });
 
 	list.drawList(hdc, Scale);
-}
+}*/
 
-
-=======
->>>>>>> master
 char *szToolById[] = {
 	"line",
 	"circle",
@@ -209,14 +207,15 @@ char *szToolById[] = {
 	"rectangle_rounded"
 };
 
-int iCurrentTool = -1;
+int iCurrentTool = 1;
 bool bDrawTemp = false;
 FigureList list;
 Point startMousePos = { 0, 0 }, currentMousePos = { 0, 0 };
 
 DWORD rgbBackground = RGB(0, 0, 0);
 DWORD rgbBorder = RGB(0, 0, 0);
-
+int styleBackground = -1;
+int styleBorder = 0;
 
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
@@ -228,18 +227,9 @@ DWORD rgbBorder = RGB(0, 0, 0);
 //  WM_DESTROY  - post a quit message and return
 //
 //
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-<<<<<<< HEAD
-	POINT oldMousePos = { 0, 0 }, newMousePos = { 0, 0 };
-	BOOL LBTisDown = false;
-	
-
-	wchar_t buffer[64];
-=======
-
->>>>>>> master
-
     switch (message)
     {
     case WM_COMMAND:
@@ -289,6 +279,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					rgbBorder = cc.rgbResult;
 
 				break;
+			case IDM_BACKGROUND_SOLID:
+				styleBackground = -1;
+				break;
+			case IDM_BACKGROUND_HORIZONTAL:
+				styleBackground = 0;
+				break;
+			case IDM_BACKGROUND_FDIAGONAL:
+				styleBackground = 1;
+				break;
+			case IDM_BACKGROUND_BDIAGONAL:
+				styleBackground = 2;
+				break;
+			case IDM_BACKGROUND_CROSS:
+				styleBackground = 3;
+				break;
+			case IDM_BACKGROUND_DIAGCROSS:
+				styleBackground = 4;
+				break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
@@ -304,7 +312,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			if (bDrawTemp)
 			{
-				Figure TempFigure(startMousePos, currentMousePos, szToolById[iCurrentTool]);
+				Figure TempFigure(startMousePos, currentMousePos, szToolById[iCurrentTool], rgbBackground, rgbBorder, styleBackground, styleBorder);
 				TempFigure.draw(hdc, 1);
 			}
 
@@ -316,13 +324,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 	case WM_LBUTTONDOWN:
 		{
-			LBTisDown = true;
-			swprintf(buffer, _countof(buffer), L"%d\n", LBTisDown);
-			OutputDebugString(buffer);
-			Scale = Scale - 0.02;
-			GetCursorPos(&oldMousePos);
-			
-			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 			startMousePos = { LOWORD(lParam), HIWORD(lParam) };
 			if (iCurrentTool >= 0)
 			{
@@ -333,14 +334,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONUP:
 		{
-			Scale = Scale + 0.02;
-			RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE);
 			bDrawTemp = false;
 
 			if (iCurrentTool >= 0)
 			{
 				// Let's create our figure
-				list.add({ startMousePos, currentMousePos, szToolById[iCurrentTool] });
+				list.add({ startMousePos, currentMousePos, szToolById[iCurrentTool], rgbBackground, rgbBorder, styleBackground, styleBorder });
 				InvalidateRect(hWnd, NULL, TRUE);
 			}
 			else
@@ -361,6 +360,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				// Let's redraw current figure
 				InvalidateRect(hWnd, NULL, TRUE);
+
+
 			}
 		}
 		break;

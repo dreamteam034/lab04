@@ -20,7 +20,6 @@ public:
 
 	BOOL draw(static HDC hdc, static float Scale);
 	void move(static Point oldMousePos, static Point newMousePos);
-	void destroy();
 
 	void setPosInList(static unsigned int value);
 

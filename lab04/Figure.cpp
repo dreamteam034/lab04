@@ -9,8 +9,8 @@ Figure::Figure()
 	type = NULL;
 	backgroundColor = RGB(0, 0, 0);
 	borderColor = RGB(0, 0, 0);
-	backgroundStyle = 0;
-	borderStyle = PS_SOLID;
+	backgroundStyle = -1;
+	borderStyle = 0;
 }
 
 Figure::Figure(static Point start, static Point end, static char * type) {
@@ -19,8 +19,8 @@ Figure::Figure(static Point start, static Point end, static char * type) {
 	this->type = type;
 	backgroundColor = RGB(0, 0, 0);
 	borderColor = RGB(0, 0, 0);
-	backgroundStyle = 0;
-	borderStyle = PS_SOLID;
+	backgroundStyle = -1;
+	borderStyle = 0;
 }
 
 Figure::Figure(static Point start, static Point end, static char * type, static unsigned backgroundColor, static unsigned borderColor, static int backgroundStyle, static int borderStyle)
@@ -39,10 +39,19 @@ BOOL Figure::draw(static HDC hdc, static float Scale)
 	BOOL tmp;
 	wchar_t buffer[64];
 
+	HPEN hPen = CreatePen(borderStyle, 0, borderColor);
+	
+	HBRUSH hBrush;
+	if (backgroundStyle >= 0)
+		hBrush = CreateHatchBrush(backgroundStyle, backgroundColor);
+	else
+		hBrush = CreateSolidBrush(backgroundColor);
+		
+	SelectObject(hdc, hPen);
+	SelectObject(hdc, hBrush);
+
 	if (strcmp(type, "line") == 0) {
-		tmp = MoveToEx(hdc, start.getX() * Scale, start.getY() * Scale, NULL);
-		if (!tmp)
-			return tmp;
+		MoveToEx(hdc, start.getX() * Scale, start.getY() * Scale, NULL);
 		tmp = LineTo(hdc, end.getX() * Scale, end.getY() * Scale);
 	}
 	else if (strcmp(type, "rectangle") == 0) {
@@ -51,6 +60,9 @@ BOOL Figure::draw(static HDC hdc, static float Scale)
 	else if (strcmp(type, "circle") == 0) {
 		tmp = Ellipse(hdc, start.getX() * Scale, start.getY()* Scale, end.getX() * Scale, end.getY() * Scale);
 	}
+
+	DeleteObject(hPen);
+	DeleteObject(hBrush);
 
 	return tmp;
 }
