@@ -39,6 +39,15 @@ BOOL Figure::draw(static HDC hdc, static float Scale)
 	BOOL tmp;
 	wchar_t buffer[64];
 
+	HPEN hp = CreatePen(borderStyle, 0, 0);
+	HBRUSH hbr = CreateHatchBrush(backgroundStyle, backgroundColor);
+
+	SelectObject(hdc, hp);
+	SelectObject(hdc, hbr);
+
+	SetDCPenColor(hdc, RGB(0, 0, 255));
+	SetDCBrushColor(hdc, RGB(255, 0, 0));
+
 	if (strcmp(type, "line") == 0) {
 		tmp = MoveToEx(hdc, start.getX() * Scale, start.getY() * Scale, NULL);
 		if (!tmp)
@@ -51,6 +60,9 @@ BOOL Figure::draw(static HDC hdc, static float Scale)
 	else if (strcmp(type, "circle") == 0) {
 		tmp = Ellipse(hdc, start.getX() * Scale, start.getY()* Scale, end.getX() * Scale, end.getY() * Scale);
 	}
+
+	DeleteObject(hp);
+	DeleteObject(hbr);
 
 	return tmp;
 }
